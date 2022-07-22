@@ -7,3 +7,6 @@
    GGF is a not so fast python script to enumerate ports. I did use ```multiprocessing``` to speed up the process.
    
 ***be aware that with very high threads you might miss some ports.***
+
+
+![ggf](https://user-images.githubusercontent.com/78124142/180364199-ce24c503-70fe-48cd-9884-1a68e64f6f56.gif)
