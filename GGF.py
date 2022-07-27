@@ -1,85 +1,73 @@
-#!/usr/bin/python3
-
-
+#!/bin/python3
 
 import socket
 import sys
 import concurrent.futures
-import time
 import ctypes
+import time
+import requests
+import re
+from colorama import Fore
 
 
 
-print("\nCreated by: SickAndTired")
-print("")
-
-
-
-#just colors
+WRO = '\33[91m'
+NG = '\33[0m'
 PO = '\33[34m'
 RT = '\33[0m'
 
 
-#Nedded line for pthread_cancel
+
 libgcc_s = ctypes.CDLL('libgcc_s.so.1')
 
 
 
-#Timer startup
 start = time.perf_counter()
 
 
 
 target = sys.argv[1]
+ip = str(socket.gethostbyname(target))
+#ip = str(socket.gethostbyname("resendefc.com.br"))
 
 
 
-#get host by name
-def host(port):
-    host = socket.gethostbyname(target)
+print("Created by: SickAndTired")
+print("")
+
+
+
+def scan(port):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(2)
-        result = s.connect_ex((host, port))
-        if result == 0:
-            p = (PO + f"{port}" + RT)
-            #print(s.recv(1024))
-            print("OPEN"+f"[{p}]")
-        s.close()
-    except socket.gaierror:
-        print("gaierror")
-    except socket.error:
-        print("not responding")
-
-
-
-#just address
-def scan(port):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout(0.2)
-    try:
-        s.connect((target, port))
-        p = (PO + f"{port}" + RT)
-        print("OPEN"+f"[{p}]")
-        s.close()
+        s.settimeout(3)
+        if s.connect_ex((ip, int(port))) == 0:
+            s.connect_ex((ip, int(port)))
+            try:
+                result = (str(s.recv(35)).strip('b').replace('-', '').replace('\\r\\n', '').replace('\'', '').replace('*', '').replace('+', ''))
+                print("OPEN [" + PO +f"{port}" + RT + "]    "+f"{result}")
+                s.close()
+            except:
+                url = (f"http://{ip}:{port}")
+                r = requests.head(url=url)
+                if (r.headers["Server"]) == "":
+                    #port = (PO + f"{port}" + RT)
+                    print("OPEN [" + PO +f"{port}" + RT + "]    unknown")
+                else:
+                    print("OPEN [" + PO +f"{port}" + RT + "]    "+f"{r.headers['Server']}")
+        else:
+            pass
     except:
         pass
 
 
 
-#determining if target it is ip adrress or not
-if target.count('.') == 3:
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2000) as executor:
-        for port in range(65535):
-            executor.submit(scan, port)
-else:
-    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
-        for port in range(79, 81):
-            executor.submit(host, port)
+with concurrent.futures.ThreadPoolExecutor(max_workers=400) as executor:
+    for port in range(1, 65001):
+        executor.submit(scan, port)
 
 
 
-#Timer resolution
 end = time.perf_counter()
 final = float(end - start)
 print(f"\ntime elapsed:[{final:0.4f} sec]")
