@@ -6,9 +6,12 @@ import concurrent.futures
 import ctypes
 import time
 import requests
-import re
-from colorama import Fore
 
+
+
+from services import services
+from ports import ports
+from portas import portas
 
 
 WRO = '\33[91m'
@@ -28,13 +31,19 @@ start = time.perf_counter()
 
 target = sys.argv[1]
 ip = str(socket.gethostbyname(target))
-#ip = str(socket.gethostbyname("resendefc.com.br"))
 
 
 
 print("Created by: SickAndTired")
 print("")
 
+
+
+const1 = (35)
+const2 = (24)
+
+
+bla = ['21','22','65000']
 
 
 def scan(port):
@@ -44,26 +53,36 @@ def scan(port):
         if s.connect_ex((ip, int(port))) == 0:
             s.connect_ex((ip, int(port)))
             try:
-                result = (str(s.recv(35)).strip('b').replace('-', '').replace('\\r\\n', '').replace('\'', '').replace('*', '').replace('+', ''))
-                print("OPEN [" + PO +f"{port}" + RT + "]    "+f"{result}")
-                s.close()
+                recv = s.recv(35)
+                if len(recv) == const1 or const2:
+                    for p, service in zip(portas, services):
+                        if port == p:
+                            result = recv
+                            print("OPEN [" + PO +f"{p}" + RT + "] [" f"{service}" "]",str(result).strip('b').replace('-', '').replace('\\r\\n', '').replace("'", ""))
+                            s.close()
+                        else:
+                            pass
             except:
                 url = (f"http://{ip}:{port}")
                 r = requests.head(url=url)
-                if (r.headers["Server"]) == "":
-                    #port = (PO + f"{port}" + RT)
-                    print("OPEN [" + PO +f"{port}" + RT + "]    unknown")
-                else:
-                    print("OPEN [" + PO +f"{port}" + RT + "]    "+f"{r.headers['Server']}")
+                for p, service in zip(portas, services):
+                    if port == p:
+                        if (r.headers["Server"]) == "":
+                            #port = (PO + f"{port}" + RT)
+                            print("OPEN [" + PO +f"{port}" + RT + "] [" f"{service}" "] unknown")
+                        else:
+                            print("OPEN [" + PO +f"{port}" + RT + "] [" f"{service}" "] "+f"{r.headers['Server']}")
+                    else:
+                        pass
+                
         else:
             pass
     except:
-        pass
+        sys.exit(0)
 
 
-
-with concurrent.futures.ThreadPoolExecutor(max_workers=400) as executor:
-    for port in range(1, 65001):
+with concurrent.futures.ThreadPoolExecutor(max_workers=1000) as executor:
+    for port in bla:
         executor.submit(scan, port)
 
 
