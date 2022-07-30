@@ -9,8 +9,8 @@ import requests
 
 #local stuff
 from services import services
-from ports import ports
-from portas import portas
+from Yports import yports
+from Xports import xports
 
 
 #just colors
@@ -68,7 +68,7 @@ def scan(port):
             try:
                 recv = s.recv(35)
                 if len(recv) == comparison1 or comparison2:
-                    for p, service in zip(portas, services):
+                    for p, service in zip(xports, services):
                         if port == p:
                             step1 = recv
                             p = (SOC + f"{port}" + KET)
@@ -81,7 +81,7 @@ def scan(port):
             except:
                 url = (f"http://{ip}:{port}")
                 r = requests.head(url=url)
-                for p, service in zip(portas, services):
+                for p, service in zip(xports, services):
                     if port == p:
                         p = (W + f"{port}" + EB)
                         unknown = (UNK + "¿unknown?" + NOWN)
@@ -102,7 +102,7 @@ def scan(port):
 
 
 with concurrent.futures.ThreadPoolExecutor(max_workers=1000) as executor:
-    for port in ports:
+    for port in yports:
         executor.submit(scan, port)
 
 
