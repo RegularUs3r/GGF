@@ -5,7 +5,7 @@ Intended to enumerate ports, this script was create aiming to do that with the h
 <img src="https://user-images.githubusercontent.com/78124142/179854800-32a77f78-8aba-48ac-a792-2733a91dba47.gif" />
 </p>
 
-Althogh I did use ```concurrent.futures``` to speed up the process I'm unable to predict them, maybe you can help!   
+The script loops through almost all the 65535 ports that's why I wanted to use ```concurrent.futures``` to speed up the process. But I'm unable to predict them, maybe you can help!   
 
 So called "Proof of Concept"
 
