@@ -3,34 +3,35 @@
 import socket
 import sys
 import concurrent.futures
-import ctypes
 import time
 import requests
 
 
-
+#local stuff
 from services import services
 from ports import ports
 from portas import portas
 
 
-WRO = '\33[91m'
-NG = '\33[0m'
-PO = '\33[34m'
-RT = '\33[0m'
+#just colors
+W = '\033[37m'
+EB = '\33[0m'
+
+SOC = '\033[37m'
+KET = '\33[0m'
+
+UNK = '\33[33'
+NOWN = '\33[0m'
+
+SER = '\33[101m'
+VER = '\33[0m'
 
 
 
-libgcc_s = ctypes.CDLL('libgcc_s.so.1')
-
-
-
+#I'm counting!
 start = time.perf_counter()
 
 
-
-target = sys.argv[1]
-ip = str(socket.gethostbyname(target))
 
 
 
@@ -39,11 +40,23 @@ print("")
 
 
 
-const1 = (35)
-const2 = (24)
+
+try:
+    target = sys.argv[1]
+    ip = str(socket.gethostbyname(target))
+    if target in f"{sys.argv[1]}":
+        pass
+    else:
+        pass
+except IndexError:
+    print("You might missing something")
+    print("Usage: ./GottaGoFast.py target.com/1.1.1.1")
 
 
-bla = ['21','22','65000']
+
+comparison1 = (35)
+comparison2 = (24)
+
 
 
 def scan(port):
@@ -54,11 +67,14 @@ def scan(port):
             s.connect_ex((ip, int(port)))
             try:
                 recv = s.recv(35)
-                if len(recv) == const1 or const2:
+                if len(recv) == comparison1 or comparison2:
                     for p, service in zip(portas, services):
                         if port == p:
-                            result = recv
-                            print("OPEN [" + PO +f"{p}" + RT + "] [" f"{service}" "]",str(result).strip('b').replace('-', '').replace('\\r\\n', '').replace("'", ""))
+                            step1 = recv
+                            p = (SOC + f"{port}" + KET)
+                            service = (f"{service}")
+                            result = (str(step1).strip('b').replace('-', '').replace('\\r\\n', '').replace("'", ""))
+                            print(f"OPEN   [{p}]       [{service}]       [{result}]")
                             s.close()
                         else:
                             pass
@@ -67,23 +83,28 @@ def scan(port):
                 r = requests.head(url=url)
                 for p, service in zip(portas, services):
                     if port == p:
+                        p = (W + f"{port}" + EB)
+                        unknown = (UNK + "¿unknown?" + NOWN)
+                        server = (SER + f'{r.headers["Server"]}' + VER)
                         if (r.headers["Server"]) == "":
-                            #port = (PO + f"{port}" + RT)
-                            print("OPEN [" + PO +f"{port}" + RT + "] [" f"{service}" "] unknown")
+                            service = (f"{service}")
+                            print(f"OPEN   [{p}]    [{service}]   [{unknown}]")
                         else:
-                            print("OPEN [" + PO +f"{port}" + RT + "] [" f"{service}" "] "+f"{r.headers['Server']}")
+                            print(f"OPEN   [{p}]    [{service}]   [{server}]")
                     else:
                         pass
-                
         else:
             pass
     except:
-        sys.exit(0)
+        pass
+
+
 
 
 with concurrent.futures.ThreadPoolExecutor(max_workers=1000) as executor:
-    for port in bla:
+    for port in ports:
         executor.submit(scan, port)
+
 
 
 
