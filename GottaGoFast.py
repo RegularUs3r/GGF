@@ -5,12 +5,24 @@ import sys
 import concurrent.futures
 import requests
 import time
+import ctypes
+
+
+
+#Nedded for too complicated tasks
+libgcc_s = ctypes.CDLL('libgcc_s.so.1')
+
 
 
 #local stuff
 from services import services
 from Yports import yports
 from Xports import xports
+
+
+print("Created by: SickAndTired")
+print("")
+
 
 
 #just colors
@@ -33,11 +45,8 @@ start = time.perf_counter()
 
 
 
-
-
-print("Created by: SickAndTired")
-print("")
-
+comparison1 = (35)
+comparison2 = (24)
 
 
 
@@ -48,17 +57,13 @@ try:
         pass
     else:
         pass
+    
 except IndexError:
     print("You might missing something")
     print("Usage: ./GottaGoFast.py target.com/1.1.1.1")
 
-
-
-comparison1 = (35)
-comparison2 = (24)
-
-
-
+    
+    
 def scan(port):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -97,17 +102,15 @@ def scan(port):
             pass
     except:
         pass
-
-
-
-
+    
+    
+    
 with concurrent.futures.ThreadPoolExecutor(max_workers=1000) as executor:
     for port in yports:
         executor.submit(scan, port)
 
-
-
-
+        
+        
 end = time.perf_counter()
 final = float(end - start)
 print(f"\ntime elapsed:[{final:0.4f} sec]")
