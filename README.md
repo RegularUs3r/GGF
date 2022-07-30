@@ -5,7 +5,7 @@ Intended to enumerate ports, this script was create aiming to do that with the h
 <img src="https://user-images.githubusercontent.com/78124142/179854800-32a77f78-8aba-48ac-a792-2733a91dba47.gif" />
 </p>
 
-I did use ```multiprocessing``` to speed up the process.   
+Althogh I did use ```concurrent.futures``` to speed up the process I'm unable to predict them, maybe you can help!   
 
 So called "Proof of Concept"
 
