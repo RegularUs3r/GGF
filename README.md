@@ -1,4 +1,4 @@
-# GGF
+# GottaGoFast
 Intended to enumerate ports, this script was create aiming to do that with the highest speed possible. Just a lame excuse to practice some scripting skills 'cause nmap can't really be replaced. ¯\_(ツ)_/¯
 
 <p align="center">
