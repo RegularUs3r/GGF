@@ -1,5 +1,5 @@
 # GottaGoFast
-Intended to enumerate ports, this script was create aiming to do that with the highest speed possible. Just a lame excuse to practice some scripting skills 'cause nmap can't really be replaced. ¯\_(ツ)_/¯
+Intended to enumerate ports, this script was created aiming to do that with the highest speed possible. Just a lame excuse to practice some scripting skills 'cause nmap can't really be replaced. ¯\_(ツ)_/¯
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/78124142/179854800-32a77f78-8aba-48ac-a792-2733a91dba47.gif" />
