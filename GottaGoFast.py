@@ -131,4 +131,8 @@ except IndexError:
     print("")                                                                                                                                                 
     print("     ┌──────[--T1: runs with 1000 threads]")                                                                                                       
     print("[Threads]:")                                                                                                                                       
-    print("     └──────[--T2: runs with 2000 threads]") 
+    print("     └──────[--T2: runs with 2000 threads]")
+ 
+end = time.perf_counter()                                                                                                      
+final = float(end - start)                                                                                                     
+print(f"\ntime elapsed:[{final:0.4f} sec]")
